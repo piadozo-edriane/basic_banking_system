@@ -42,8 +42,8 @@ class BankAccount:
         user_name = str(input("Enter the name of your account: "))
         for account in list_account:
             if account.name == user_name:
-                print ("Access granted")
-            
+                print ("Account Exist")
+                return
         print ("Your account did'nt exist")
 
     def balance ():
@@ -64,7 +64,29 @@ class BankAccount:
                         account.balance_bank -= withdraw_ammount
                         print (f"your current balance is: {account.balance_bank}")
 
-BankAccount.input_account()
-BankAccount.account_checker ()
-BankAccount.account_checker ()
-BankAccount.balance()
+while True:
+    os.system("cls")
+    print ("1. Input account")
+    print ("2. Display account")
+    print ("3. Account checker")
+    print ("4. Deposit and Withdraw checker")
+    print ("5. Exit")    
+    choice = input("Enter your choice: ")
+
+    if choice == "5":
+        break
+    match choice: 
+        case "1": 
+            BankAccount.input_account()
+            input()
+        case "2": 
+            BankAccount.display_account()
+            input()
+        case "3":
+            BankAccount.account_checker()
+            input()
+        case "4":
+            BankAccount.balance()
+            input()
+        case _:
+            print ("Invalid choice")
