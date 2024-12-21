@@ -1,119 +1,134 @@
 import os
 
-class BankAccount:
-    global list_account
-
+class Bank:
     list_account = []
-    def __init__(self, name, pin, age, gender, balance_bank):
+
+    def __init__(self, name, pin, balance):
         self.name = name
         self.pin = pin
-        self.age = age
-        self.gender = gender
-        self.balance_bank = balance_bank
+        self.balance = balance
 
-    def account_holder (self):
-        print (f"Your name is: {self.name}")
-        print (f"You pin is: {self.pin}")
-        print (f"Your age is: {self.age}")
-        print (f"Your gender is: {self.gender}")
-        print (f"Your current balance is: {self.balance_bank}")
-
-    def input_account ():
-        os.system("cls")
-        num_of_account = int(input("Enter the number of account you want to add: "))
-        for num in range (num_of_account):
-            print (f"Account number {num + 1}")
-            name = str(input("Enter your name: "))
-            pin = int(input("Enter your pin number: "))
-            age = int(input("Enter your age: "))
-            gender = str(input("Enter your gender: "))
-            balance_bank = 0
-            account = BankAccount(name, pin, age, gender, balance_bank) 
-            list_account.append(account)
-
-    def display_account():
-        print ("The list of account")
-        for num in list_account:
-            num.account_holder()
-            print ("+" * 20)
-
-    def account_checker ():
-        os.system("cls")
-        user_name = str(input("Enter the name of your account: "))
-        for account in list_account:
-            if account.name == user_name:
-                print ("Account Exist")
-                return
-            
-        print ("Your account did'nt exist")
-
-    def balance ():
-        os.system("cls")
-        user_pin = int(input("Enter your pin to your account: "))
-        for account in list_account:
-            if account.pin == user_pin:
-                choice = input ("D for deposit, W for withdraw: ")
-                if choice == "D":
-                    deposit = int(input("Enter the amount you want to deposist: "))
-                    account.balance_bank += deposit
-                    print (f"your current balance is: {account.balance_bank}")
-                elif account.balance_bank <= 0:
-                    print ("You can't withdraw")
-                    print ("Your balance is zero")
-                    return
-                elif choice == "W":
-                    withdraw_ammount = int(input("Enter the amount you want to withdraw: "))
-                    account.balance_bank -= withdraw_ammount
-                    print (f"your current balance is: {account.balance_bank}")
-            elif account.pin != user_pin:
-                print ("User pin is incorrect")
-                return
+    def create_account ():
+        user_name = input("Enter your name: ")
+        user_pin = input("Enter your pin number: ")
+        user_balance = 0
         
-    def transfer_balance ():
-        for account in list_account:
-            check_user = str(input("Enter your name: "))
-            if account.name == check_user:
-                transfer_balance = account.balance_bank
-                transfer_user = str(input("Enter the name you want to transfer: "))
-                transfer_balance = int(input("Enter the amount you want to transfer: "))
-                account.balance_bank -= transfer_balance
-                print (f"Your total balance is: {account.balance_bank}")
+        account = Bank(user_name, user_pin, user_balance)
+        Bank.list_account.append(account)
 
-            if account.name == transfer_user:
-                account.balance_bank += transfer_balance
-                print (f"Your total balance is: {account.balance_bank}")
+    def show_information (self):
+        print (f"Your username is: {self.name}")
+        print (f"Your user pin is: {self.pin}")
+        print (f"Your current balance is: {self.balance}")
+
+    def show_seperate_information ():
+        if not Bank.list_account:
+            print ("Account not found")
+            return
+
+        choice_account = int(input("Enter your account number: "))
+        Bank.list_account[choice_account].show_information()        
+        
+    def display_created_account ():
+        print ("The list of registered account")
+        for account in Bank.list_account:
+            account.show_information()
+            print ("-" * 20)
+    
+    def account_checker ():
+        check_name = input("Enter the username of your account: ")
+        for account in Bank.list_account:
+            if check_name == account.name:
+                print ("Account is Existed")
+                return
+
+            print ("Account not existed")
+
+    def balance_checker (self):
+        user_decision = input("Do you want to contineu Y/N: ")
+        print (f"Your current balance is: {self.balance}")
+
+        if user_decision == "N":
+            print ("Thanks")
+            return
+        print ("W for withdraw / D for deposit")
+        input_user = input("Enter your choice: ")
+        input_balance = int(input("The amount of money: "))
+
+    def balance_user_display ():
+        if not Bank.list_account:
+            print ("Account not found")
+            return
+
+        choice_account = int(input("Enter your account number: "))
+        Bank.list_account[choice_account].balance_checker()
+
+    def deposit_balance (self, input_user, input_balance):
+        if input_user == "D":
+            self.balance += input_balance
+            print (f"Your total balance is: {self.balance}")
+
+    def deposit_balance_display (self):
+        if not Bank.list_account:
+            print ("Account not found")
+            return
+
+        choice_account = int(input("Enter your account number: "))
+        Bank.list_account[choice_account].deposit_balance()
+
+    def withdraw_balance (self, input_user, input_balance):
+        if self.balance == 0:
+            print (f"Can't withdraw you have: {self.balance}")
+            return
+        
+        if input_user == "W":
+            self.balance -= input_balance
+            print (f"Your current balance is: {self.balance}")
+    
+    def withdraw_balance_display ():
+        if not Bank.list_account:
+            print ("Account not found")
+            return
+
+        choice_account = int(input("Enter your account number: "))
+        Bank.list_account[choice_account].balance_checker()
+
 
 while True:
-    os.system("cls")
-    print ("1. Input account")
-    print ("2. Display account")
-    print ("3. Account checker")
-    print ("4. Deposit and Withdraw checker")
-    print ("5. Transfer to another user")
-    print ("6. Exit")    
-    choice = input("Enter your choice: ")
+    os.system ("cls")
+    print ("1. Create account")
+    print ("2. Show information account")
+    print ("3. Display registered account")
+    print ("4. Check account if registered")
+    print ("5. Balance checker")
+    print ("6. Deposit")
+    print ("7. Withdraw")
 
-    if choice == "6":
+    input_user = input ("Enter your choice: ")
+
+    if input_user == "0":
         break
-    match choice: 
+
+    match input_user:
         case "1":
             os.system("cls")
-            BankAccount.input_account()
-            input()
+            Bank.create_account()
+            input ()
         case "2":
-            os.system("cls") 
-            BankAccount.display_account()
-            input()
+            os.system("cls")
+            Bank.show_seperate_information()
+            input ()
         case "3":
             os.system("cls")
-            BankAccount.account_checker()
-            input()
+            Bank.display_created_account()
+            input ()
         case "4":
             os.system("cls")
-            BankAccount.balance()
+            Bank.account_checker()
             input()
         case "5":
-            BankAccount.transfer_balance()
-            input()
+            os.system("cls")
+            Bank.balance_user_display()
+            input
         case _:
             print ("Invalid choice")
